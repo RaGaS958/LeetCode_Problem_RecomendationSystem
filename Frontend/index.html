@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LC Recommender ⬡</title>
+  <meta name="description" content="AI-powered LeetCode problem recommendation system" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⬡</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+
+<!-- ── Background ─────────────────────────────────────────── -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- ── App ────────────────────────────────────────────────── -->
+<div class="app">
+
+  <!-- ── Navbar ─────────────────────────────────────────── -->
+  <nav class="navbar">
+    <a class="nav-logo" href="#" onclick="navigateTo('dashboard');return false;">
+      <div class="logo-icon">⬡</div>
+      LC<span style="color:var(--white)">Rec</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#" data-section="dashboard" class="active">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a></li>
+      <li><a href="#" data-section="problems">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+        Problems
+      </a></li>
+      <li><a href="#" data-section="top">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        Top Lists
+      </a></li>
+      <li><a href="#" data-section="recommend">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 9v4a3 3 0 003 3h4m4-4V8a3 3 0 00-3-3H9"/></svg>
+        Recommend
+      </a></li>
+      <li><a href="#" data-section="analytics">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Analytics
+      </a></li>
+    </ul>
+
+    <div class="nav-hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- ════════════════════════════════════════════════════════
+       SECTION: DASHBOARD
+  ════════════════════════════════════════════════════════ -->
+  <section id="section-dashboard" class="section active">
+
+    <div class="page-header">
+      <div class="eyebrow">// AI-Powered</div>
+      <h1>LeetCode <span>Recommender</span></h1>
+      <p>Find the right problems, practice smarter, crack any interview.</p>
+    </div>
+
+    <!-- Stats -->
+    <div id="stats-grid" class="stats-grid">
+      <!-- Rendered by JS -->
+      <div class="stat-card skeleton" style="height:110px;opacity:1"></div>
+      <div class="stat-card skeleton" style="height:110px;opacity:1"></div>
+      <div class="stat-card skeleton" style="height:110px;opacity:1"></div>
+      <div class="stat-card skeleton" style="height:110px;opacity:1"></div>
+      <div class="stat-card skeleton" style="height:110px;opacity:1"></div>
+      <div class="stat-card skeleton" style="height:110px;opacity:1"></div>
+      <div class="stat-card skeleton" style="height:110px;opacity:1"></div>
+    </div>
+
+    <!-- Two-column quick lists -->
+    <div class="dashboard-grid">
+      <div class="dashboard-panel">
+        <div class="section-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--neon)" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          Top by Frequency
+          <div class="title-line"></div>
+        </div>
+        <div id="dash-top-freq">
+          <div class="spinner-wrap"><div class="spinner"></div></div>
+        </div>
+        <button class="tab-btn" style="margin-top:1rem;width:100%"
+          onclick="navigateTo('top')">View All Top Problems →</button>
+      </div>
+
+      <div class="dashboard-panel">
+        <div class="section-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--neon)" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Top FAANG by Likes
+          <div class="title-line"></div>
+        </div>
+        <div id="dash-top-faang">
+          <div class="spinner-wrap"><div class="spinner"></div></div>
+        </div>
+        <button class="tab-btn" style="margin-top:1rem;width:100%"
+          onclick="navigateTo('problems');state.problems.faang=true;document.getElementById('filter-faang').classList.add('active');loadProblems()">View FAANG Problems →</button>
+      </div>
+    </div>
+
+    <!-- Quick actions -->
+    <div class="section-title reveal">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--neon)" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
+      Quick Actions
+      <div class="title-line"></div>
+    </div>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;" class="reveal">
+      <button class="btn-primary" onclick="navigateTo('recommend')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 9v4a3 3 0 003 3h4m4-4V8a3 3 0 00-3-3H9"/></svg>
+        Get Recommendations
+      </button>
+      <button class="btn-secondary" onclick="navigateTo('problems')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Browse Problems
+      </button>
+      <button class="btn-secondary" onclick="navigateTo('analytics')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Analytics
+      </button>
+    </div>
+
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       SECTION: PROBLEMS
+  ════════════════════════════════════════════════════════ -->
+  <section id="section-problems" class="section">
+
+    <div class="section-title" style="margin-bottom:1.5rem">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--neon)" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+      All Problems
+      <span id="problems-count" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--muted);font-weight:400"></span>
+      <div class="title-line"></div>
+    </div>
+
+    <!-- Search bar -->
+    <div class="search-bar-wrap">
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="problems-search" class="search-input" type="text"
+        placeholder="Search problems… (press / to focus)" autocomplete="off" />
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-row">
+      <select id="filter-difficulty" class="filter-select">
+        <option value="">All Difficulties</option>
+        <option value="Easy">Easy</option>
+        <option value="Medium">Medium</option>
+        <option value="Hard">Hard</option>
+      </select>
+
+      <select id="filter-topic" class="filter-select">
+        <option value="">All Topics</option>
+      </select>
+
+      <select id="filter-sort" class="filter-select">
+        <option value="frequency">Sort: Frequency</option>
+        <option value="likes">Sort: Likes</option>
+        <option value="rating">Sort: Rating</option>
+        <option value="id">Sort: ID</option>
+      </select>
+
+      <label id="filter-faang" class="filter-toggle">
+        <input type="checkbox" />
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        FAANG Only
+      </label>
+    </div>
+
+    <!-- Problem cards -->
+    <div id="problems-list">
+      <div class="spinner-wrap"><div class="spinner"></div></div>
+    </div>
+
+    <!-- Pagination -->
+    <div id="pagination" class="pagination"></div>
+
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       SECTION: TOP LISTS
+  ════════════════════════════════════════════════════════ -->
+  <section id="section-top" class="section">
+
+    <div class="section-title" style="margin-bottom:1.5rem">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--neon)" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+      Top Problems
+      <div class="title-line"></div>
+    </div>
+
+    <!-- N selector -->
+    <div style="margin-bottom:0.75rem;font-family:var(--font-mono);font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em">Show top</div>
+    <div class="tabs-row" style="margin-bottom:1.25rem">
+      <button class="tab-btn active" data-top-n="5">Top 5</button>
+      <button class="tab-btn active" data-top-n="10">Top 10</button>
+      <button class="tab-btn" data-top-n="20">Top 20</button>
+      <button class="tab-btn" data-top-n="50">Top 50</button>
+    </div>
+
+    <!-- Metric -->
+    <div style="margin-bottom:0.75rem;font-family:var(--font-mono);font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em">Metric</div>
+    <div class="tabs-row" style="margin-bottom:1.25rem">
+      <button class="tab-btn active" data-top-metric="frequency">Frequency</button>
+      <button class="tab-btn" data-top-metric="likes">Likes</button>
+      <button class="tab-btn" data-top-metric="rating">Rating</button>
+    </div>
+
+    <!-- Difficulty -->
+    <div style="margin-bottom:0.75rem;font-family:var(--font-mono);font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em">Difficulty</div>
+    <div class="tabs-row" style="margin-bottom:2rem">
+      <button class="tab-btn active" data-top-diff="">All</button>
+      <button class="tab-btn" data-top-diff="Easy">Easy</button>
+      <button class="tab-btn" data-top-diff="Medium">Medium</button>
+      <button class="tab-btn" data-top-diff="Hard">Hard</button>
+    </div>
+
+    <div id="top-list">
+      <div class="spinner-wrap"><div class="spinner"></div></div>
+    </div>
+
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       SECTION: RECOMMEND
+  ════════════════════════════════════════════════════════ -->
+  <section id="section-recommend" class="section">
+
+    <div class="recommend-search-wrap">
+      <div style="font-family:var(--font-mono);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--neon);margin-bottom:0.75rem">// AI Recommender</div>
+      <h2>Find <span>Similar</span> Problems</h2>
+      <p style="color:var(--muted);font-size:0.875rem;margin-bottom:1.5rem">Type a LeetCode problem name to discover similar challenges</p>
+
+      <div class="search-bar-wrap" style="max-width:100%">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="rec-search-input" class="search-input" type="text"
+          placeholder="e.g. Two Sum, Binary Tree, Coin Change…" autocomplete="off" />
+        <div id="rec-autocomplete" class="autocomplete-dropdown"></div>
+      </div>
+    </div>
+
+    <div id="rec-source"></div>
+    <div id="rec-list">
+      <div class="empty-state">
+        <div class="empty-icon" style="font-size:4rem;opacity:0.3;filter:none">⬡</div>
+        <p style="font-family:var(--font-mono);font-size:0.8rem;color:var(--muted)">Search for a problem to see recommendations</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       SECTION: ANALYTICS
+  ════════════════════════════════════════════════════════ -->
+  <section id="section-analytics" class="section">
+
+    <div class="section-title" style="margin-bottom:1.5rem">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--neon)" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Analytics
+      <div class="title-line"></div>
+    </div>
+
+    <div class="dashboard-grid">
+      <!-- Difficulty breakdown -->
+      <div class="dashboard-panel">
+        <div class="section-title" style="font-size:1rem;margin-bottom:1.25rem">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--neon)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          Difficulty Breakdown
+        </div>
+        <div id="difficulty-chart">
+          <div class="spinner-wrap"><div class="spinner"></div></div>
+        </div>
+
+        <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:0.78rem">
+            <span style="color:var(--easy)">◉ Easy</span>
+            <span id="easy-pct" style="color:var(--muted)"></span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:0.78rem">
+            <span style="color:var(--medium)">◉ Medium</span>
+            <span id="med-pct" style="color:var(--muted)"></span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:0.78rem">
+            <span style="color:var(--hard)">◉ Hard</span>
+            <span id="hard-pct" style="color:var(--muted)"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Topic distribution -->
+      <div class="dashboard-panel">
+        <div class="section-title" style="font-size:1rem;margin-bottom:1.25rem">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--neon)" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+          Top Topics
+        </div>
+        <div id="topic-chart">
+          <div class="spinner-wrap"><div class="spinner"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional stat cards -->
+    <div class="section-title reveal" style="margin-top:2rem">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--neon)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Dataset Overview
+      <div class="title-line"></div>
+    </div>
+    <div class="stats-grid reveal" id="analytics-stats-grid" style="opacity:1">
+      <div class="skeleton stat-card" style="height:110px;opacity:1"></div>
+      <div class="skeleton stat-card" style="height:110px;opacity:1"></div>
+      <div class="skeleton stat-card" style="height:110px;opacity:1"></div>
+    </div>
+
+  </section>
+
+</div><!-- /.app -->
+
+<!-- ── Modal overlay ──────────────────────────────────────── -->
+<div id="modal-overlay" class="modal-overlay">
+  <div class="modal"></div>
+</div>
+
+<!-- ── Toaster ─────────────────────────────────────────────── -->
+<div id="toaster"></div>
+
+<!-- ── Keyboard shortcut hint ─────────────────────────────── -->
+<div style="position:fixed;bottom:1.5rem;left:1.5rem;z-index:10;font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);pointer-events:none;display:flex;align-items:center;gap:6px;">
+  <kbd style="background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:4px;padding:1px 6px;color:var(--neon)">/</kbd>
+  to search
+  &nbsp;&nbsp;
+  <kbd style="background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:4px;padding:1px 6px;color:var(--neon)">Esc</kbd>
+  close
+</div>
+
+<script src="./app.js"></script>
+
+<!-- Inline patch: wire top-section nav click → loadTop -->
+<script>
+  // Override navigateTo for 'top' section to auto-load
+  const _origNav = navigateTo;
+  window.navigateTo = function(section) {
+    _origNav(section);
+    if (section === 'top') loadTop();
+    if (section === 'analytics') {
+      // re-render analytics stat cards from loaded stats
+      setTimeout(() => {
+        if (state.stats) {
+          const s = state.stats;
+          const grid = document.getElementById('analytics-stats-grid');
+          if (grid) {
+            const total = s.easy + s.medium + s.hard;
+            const pct = n => ((n/total)*100).toFixed(1) + '%';
+            document.getElementById('easy-pct') && (document.getElementById('easy-pct').textContent = pct(s.easy));
+            document.getElementById('med-pct')  && (document.getElementById('med-pct').textContent  = pct(s.medium));
+            document.getElementById('hard-pct') && (document.getElementById('hard-pct').textContent = pct(s.hard));
+            grid.innerHTML = [
+              { icon: '⬡', value: s.total,            label: 'Total Problems'   },
+              { icon: '⬟', value: s.faang,            label: 'FAANG Problems'   },
+              { icon: '⬢', value: s.unique_companies, label: 'Companies'        },
+            ].map(it => `
+              <div class="stat-card">
+                <span class="stat-icon">${it.icon}</span>
+                <span class="stat-value" style="color:var(--neon)">${it.value.toLocaleString()}</span>
+                <span class="stat-label">${it.label}</span>
+              </div>
+            `).join('');
+            animateCards([...grid.querySelectorAll('.stat-card')]);
+          }
+        }
+      }, 600);
+    }
+  };
+
+  // Fix top-section: only first tab-btn[data-top-n] should be active on init
+  document.addEventListener('DOMContentLoaded', () => {
+    const topNBtns = document.querySelectorAll('[data-top-n]');
+    topNBtns.forEach((b, i) => { if (i !== 0) b.classList.remove('active'); });
+    // default: top 10
+    topNBtns[1]?.classList.add('active');
+    state.top.n = 10;
+  });
+</script>
+
+</body>
+</html>

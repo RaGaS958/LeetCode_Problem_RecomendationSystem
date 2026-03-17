@@ -2,7 +2,7 @@
    LEETCODE RECOMMENDER — app.js
    ============================================================ */
 
-const API = 'http://localhost:8000';   
+const API = 'https://leetcode-problem-recomendationsystem.onrender.com';   
 
 /* ── State ───────────────────────────────────────────────── */
 const state = {
